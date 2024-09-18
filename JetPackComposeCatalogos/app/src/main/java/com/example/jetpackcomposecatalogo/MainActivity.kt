@@ -20,15 +20,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jetpackcomposecatalogo.ui.theme.JetpackComposeCatalogoTheme
+import kotlinx.coroutines.flow.MutableStateFlow
+import java.lang.invoke.MutableCallSite
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +44,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             JetpackComposeCatalogoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MyComplexLayout(
+                    MyStateExample(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -45,6 +52,25 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+@Composable
+fun MyStateExample(modifier: Modifier = Modifier){
+    //esto funciona cuando no se destruye el activity al rotar la  pantalla  se pierde el valor
+//    val count = remember {
+//        mutableStateOf(0)
+//    }
+//este se mantiene aun cuando el activity se destruye ejemplo rotando la pantalla
+    val count = rememberSaveable {
+        mutableStateOf(0)
+    }
+    Column(modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally){
+        Button(onClick = { count.value += 1 }) {
+            Text(text = "Pulsar")
+        }
+        Text(text = "Se ha presionado ${count.value}")
+    }
+}
+
+
 @Composable
 fun MyComplexLayout(modifier: Modifier = Modifier){
     Column(modifier.fillMaxSize()) {
@@ -55,7 +81,10 @@ fun MyComplexLayout(modifier: Modifier = Modifier){
                 .background(Color.Cyan), contentAlignment = Alignment.Center){
             Text(text = "Ejemplo 1")
         }
-        Spacer(modifier.width(0.dp).height(30.dp))
+        Spacer(
+            modifier
+                .width(0.dp)
+                .height(30.dp))
         Row(
             modifier
                 .fillMaxWidth()
@@ -280,6 +309,6 @@ fun MyBox(modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     JetpackComposeCatalogoTheme {
-        MyComplexLayout()
+        MyStateExample()
     }
 }
