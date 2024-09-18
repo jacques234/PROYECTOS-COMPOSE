@@ -39,10 +39,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             JetPackComponentsCatalogTheme {
+                var myText by rememberSaveable {
+                    mutableStateOf("")
+                }
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MyTextFieldOutLined(
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                        modifier = Modifier.padding(innerPadding),
+                        name = myText,
+                    ){myText = it}
                 }
             }
         }
@@ -61,17 +65,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetPackComponentsCatalogTheme {
-        MyTextFieldOutLined()
+//        MyTextFieldOutLined()
     }
 }
 
 @Composable
-fun MyTextFieldOutLined(modifier: Modifier = Modifier) {
-    var myText by rememberSaveable {
-        mutableStateOf("")
-    }
-    OutlinedTextField(value = myText, onValueChange = {
-        myText = it
+fun MyTextFieldOutLined(modifier: Modifier = Modifier,name:String,onValueChanged:(String)->Unit) {
+
+    OutlinedTextField(value = name, onValueChange = {
+        onValueChanged(it)
 
     }, label = { Text(text = "Escribe algo") }, modifier = Modifier.padding(24.dp), colors = TextFieldDefaults.colors(
         focusedIndicatorColor = Color.Magenta,
