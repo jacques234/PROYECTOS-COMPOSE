@@ -36,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import com.example.jetpackcomposecatalogo.ui.theme.JetpackComposeCatalogoTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.lang.invoke.MutableCallSite
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,14 +61,14 @@ fun MyStateExample(modifier: Modifier = Modifier){
 //        mutableStateOf(0)
 //    }
 //este se mantiene aun cuando el activity se destruye ejemplo rotando la pantalla
-    val count = rememberSaveable {
+    var count by rememberSaveable {
         mutableStateOf(0)
     }
     Column(modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally){
-        Button(onClick = { count.value += 1 }) {
+        Button(onClick = { count += 1 }) {
             Text(text = "Pulsar")
         }
-        Text(text = "Se ha presionado ${count.value}")
+        Text(text = "Se ha presionado ${count}")
     }
 }
 
