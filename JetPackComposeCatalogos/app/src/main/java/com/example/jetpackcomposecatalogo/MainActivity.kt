@@ -95,7 +95,7 @@ class MainActivity : ComponentActivity() {
                         Button(onClick = { show = true }) {
                             Text(text = "Mostrar")
                         }
-                        MyDialog(show = show, onDismiss = {show = false} , onConfirm = {Log.d("salir","salio")})
+                        MyConfirmationDialog(show = show, onDismiss = {show = false} )
                     }
 
                 }
