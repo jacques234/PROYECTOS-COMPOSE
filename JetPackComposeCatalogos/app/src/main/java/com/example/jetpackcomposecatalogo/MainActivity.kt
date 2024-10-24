@@ -1,15 +1,11 @@
 package com.example.jetpackcomposecatalogo
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.CheckBox
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -27,17 +23,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -49,7 +42,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -67,6 +59,13 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.jetpackcomposecatalogo.model.Routes
+import com.example.jetpackcomposecatalogo.model.Routes.*
 import com.example.jetpackcomposecatalogo.ui.CheckInfo
 
 class MainActivity : ComponentActivity() {
@@ -75,30 +74,54 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             JetpackComposeCatalogoTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
-                    val myOptions = getOptions(listOf("Diego", "Enrique", "Perez", "Molina"))
-//                    Column {
-////                        myOptions.forEach {
-////                            MyCheckBoxWithTextCompleted(
-////                                modifier = Modifier.padding(innerPadding),
-////                                it
-////                            )
-////                        }
-//                        MyDialog(modifier = Modifier.padding(innerPadding))
-//
-//                    }
-                    var show by rememberSaveable {
-                        mutableStateOf(false)
+                val navigationController = rememberNavController()
+                NavHost(navController = navigationController, startDestination = Pantalla1.route) {
+                    composable(Pantalla1.route) {
+                        Screen1(navigationController)
                     }
-                    Box(modifier = Modifier.padding(innerPadding).fillMaxSize(), contentAlignment = Alignment.Center ){
-                        Button(onClick = { show = true }) {
-                            Text(text = "Mostrar")
-                        }
-                        MyConfirmationDialog(show = show, onDismiss = {show = false} )
+                    composable(Pantalla2.route) {
+                        Screen2(navigationController)
                     }
-
+                    composable(Pantalla3.route) {
+                        Screen3(navigationController)
+                    }
+                    composable(Pantalla4.route,
+                        arguments = listOf(navArgument("name") { type = NavType.StringType })
+                    ) { backBackStackEntry ->
+                        backBackStackEntry.arguments?.getString("name")
+                        Screen4(
+                            navigationController,
+                            backBackStackEntry.arguments?.getString("name")!!
+                        )
+                    }
+                    composable(Pantalla5.route,
+                        arguments = listOf(navArgument("name"
+                        ) { defaultValue = "Default" })
+                    ) { backBackStackEntry ->
+                        backBackStackEntry.arguments?.getString("name")
+                        Screen5(
+                            navigationController,
+                            backBackStackEntry.arguments?.getString("name")!!
+                        )
+                    }
                 }
+//                ScaffoldExample()
+//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+//
+//                    val myOptions = getOptions(listOf("Diego", "Enrique", "Perez", "Molina"))
+//                    var show by rememberSaveable {
+//                        mutableStateOf(false)
+//                    }
+//
+//                    SuperHeroStickyView(modifier = Modifier.padding(innerPadding))
+////                    Box(modifier = Modifier.padding(innerPadding).fillMaxSize(), contentAlignment = Alignment.Center ){
+////                        Button(onClick = { show = true }) {
+////                            Text(text = "Mostrar")
+////                        }
+////                        MyConfirmationDialog(show = show, onDismiss = {show = false} )
+////                    }
+//
+//                }
             }
         }
     }

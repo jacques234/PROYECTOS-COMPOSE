@@ -1,4 +1,4 @@
-package com.diego.instagramcompose
+package com.diego.instagramcompose.login
 
 import android.app.Activity
 import android.util.Patterns
@@ -44,12 +44,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.diego.instagramcompose.R
+import androidx.compose.runtime.livedata.observeAsState
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
+fun LoginScreen(modifier: Modifier = Modifier,loginViewModel: LoginViewModel) {
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -57,7 +58,7 @@ fun LoginScreen(modifier: Modifier = Modifier) {
             .background(colorResource(id = R.color.white))
     ) {
         Header(modifier = modifier.align(Alignment.TopEnd))
-        Body(modifier = modifier.align(Alignment.Center))
+        Body(modifier = modifier.align(Alignment.Center),loginViewModel)
         Footer(modifier = modifier.align(Alignment.BottomCenter))
     }
 
@@ -93,10 +94,11 @@ fun SingUp() {
 }
 
 @Composable
-fun Body(modifier: Modifier) {
-    var email by rememberSaveable {
-        mutableStateOf("")
-    }
+fun Body(modifier: Modifier, loginViewModel: LoginViewModel) {
+//    var email by rememberSaveable {
+//        mutableStateOf("")
+//    }
+    val email:String by loginViewModel.email.observeAsState(initial = "")
     var password by rememberSaveable {
         mutableStateOf("")
     }
@@ -110,7 +112,7 @@ fun Body(modifier: Modifier) {
         Spacer(modifier = Modifier.size(16.dp))
         Email(email = email, Modifier.fillMaxWidth()) {
             email = it
-            isLoginEnable = enableLogin(email,password)
+//            isLoginEnable = enableLogin(email,password)
         }
         Spacer(modifier = Modifier.size(4.dp))
         Password(password = password, Modifier.fillMaxWidth()) {

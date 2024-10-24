@@ -68,4 +68,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     //constraint layout
     implementation(libs.androidx.constraintlayout.compose)
+    //dependency for the navigation.
+    implementation (libs.androidx.navigation.compose)
 }
