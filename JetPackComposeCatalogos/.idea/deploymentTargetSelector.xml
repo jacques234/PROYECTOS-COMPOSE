@@ -16,6 +16,18 @@
       <SelectionState runConfigName="ConstraintChainVertical">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="ColorAnimationSimple">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="SizeAnimation">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="VisibilityAnimation">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="CrossfadeExampleAnimation">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>

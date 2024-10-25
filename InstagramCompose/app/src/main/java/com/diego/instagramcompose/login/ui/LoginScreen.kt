@@ -1,7 +1,6 @@
-package com.diego.instagramcompose.login
+package com.diego.instagramcompose.login.ui
 
 import android.app.Activity
-import android.util.Patterns
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,6 +21,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -50,16 +50,25 @@ import com.diego.instagramcompose.R
 import androidx.compose.runtime.livedata.observeAsState
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier,loginViewModel: LoginViewModel) {
+fun LoginScreen(modifier: Modifier = Modifier, loginViewModel: LoginViewModel) {
     Box(
         modifier = modifier
             .fillMaxSize()
             .padding(8.dp)
             .background(colorResource(id = R.color.white))
     ) {
-        Header(modifier = modifier.align(Alignment.TopEnd))
-        Body(modifier = modifier.align(Alignment.Center),loginViewModel)
-        Footer(modifier = modifier.align(Alignment.BottomCenter))
+        val isLoading by loginViewModel.isLoading.observeAsState(false)
+
+        if (isLoading) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        } else {
+            Header(modifier = modifier.align(Alignment.TopEnd))
+            Body(modifier = modifier.align(Alignment.Center), loginViewModel)
+            Footer(modifier = modifier.align(Alignment.BottomCenter))
+
+        }
     }
 
 }
@@ -98,31 +107,35 @@ fun Body(modifier: Modifier, loginViewModel: LoginViewModel) {
 //    var email by rememberSaveable {
 //        mutableStateOf("")
 //    }
-    val email:String by loginViewModel.email.observeAsState(initial = "")
-    var password by rememberSaveable {
-        mutableStateOf("")
-    }
-    var isLoginEnable by rememberSaveable {
-        mutableStateOf(false)
-    }
+    val email: String by loginViewModel.email.observeAsState(initial = "")
+//    var password by rememberSaveable {
+//        mutableStateOf("")
+//    }
+    val password: String by loginViewModel.password.observeAsState(initial = "")
+//    var isLoginEnable by rememberSaveable {
+//        mutableStateOf(false)
+//    }
+    val isLoginEnable: Boolean by loginViewModel.isLoginEnabled.observeAsState(initial = false)
     Column(
         modifier = modifier
     ) {
         ImageLogo(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(16.dp))
         Email(email = email, Modifier.fillMaxWidth()) {
-            email = it
+//            email = it
 //            isLoginEnable = enableLogin(email,password)
+            loginViewModel.onLoginChanged(email = it, password = password)
         }
         Spacer(modifier = Modifier.size(4.dp))
         Password(password = password, Modifier.fillMaxWidth()) {
-            password = it
-            isLoginEnable = enableLogin(email,password)
+//            password = it
+//            isLoginEnable = enableLogin(email,password)
+            loginViewModel.onLoginChanged(email = email, password = it)
         }
         Spacer(modifier = Modifier.size(8.dp))
         ForgotPassword(Modifier.align(Alignment.End))
         Spacer(modifier = Modifier.size(16.dp))
-        LoginButton(enable = isLoginEnable)
+        LoginButton(enable = isLoginEnable, loginViewModel)
         Spacer(modifier = Modifier.size(16.dp))
         LoginDivider()
         Spacer(modifier = Modifier.size(32.dp))
@@ -232,9 +245,9 @@ fun Header(modifier: Modifier) {
 }
 
 @Composable
-fun LoginButton(enable: Boolean) {
+fun LoginButton(enable: Boolean, loginViewModel: LoginViewModel) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = { loginViewModel.onLoginSelected()},
         enabled = enable,
         modifier = Modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
@@ -297,7 +310,3 @@ fun SocialLogin() {
 }
 
 
-fun enableLogin(email: String,password: String):Boolean{
-    return Patterns.EMAIL_ADDRESS.matcher(email).matches() &&
-    password.length > 6
-}

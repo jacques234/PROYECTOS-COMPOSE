@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    namespace = "com.diego.instagramcompose"
+    namespace = "com.diego.todoapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.diego.instagramcompose"
-        minSdk = 21
+        applicationId = "com.diego.todoapp"
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -69,14 +69,14 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.androidx.material.icons.extended)
 
-    //implemtacion retrofit (consumo de api)
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-
+    //dagger
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+
+    //live data
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
+    implementation("androidx.compose.runtime:runtime-livedata:1.2.1")
 }
 // Allow references to generated code
 kapt {

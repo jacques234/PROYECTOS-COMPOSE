@@ -54,6 +54,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Preview
 @Composable
 fun ScaffoldExample() {
     val scope = rememberCoroutineScope()

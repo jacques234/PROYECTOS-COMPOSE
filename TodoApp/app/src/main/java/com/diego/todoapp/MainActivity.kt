@@ -1,4 +1,4 @@
-package com.diego.instagramcompose
+package com.diego.todoapp
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,22 +9,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.diego.instagramcompose.login.ui.LoginScreen
-import com.diego.instagramcompose.login.ui.LoginViewModel
-import com.diego.instagramcompose.ui.theme.InstagramComposeTheme
+import com.diego.todoapp.addtask.ui.TaskScreen
+import com.diego.todoapp.addtask.ui.TaskVieModel
+import com.diego.todoapp.ui.theme.TodoAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val loginViewModel:LoginViewModel by viewModels()
+    private val taskVieModel:TaskVieModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            InstagramComposeTheme {
+            TodoAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    LoginScreen(modifier = Modifier.padding(innerPadding), loginViewModel)
+                    TaskScreen(
+                        modifier = Modifier.padding(innerPadding),taskVieModel
+                    )
                 }
             }
         }
